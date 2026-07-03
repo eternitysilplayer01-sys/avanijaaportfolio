@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AVANIJAA — Developer · Designer · Creator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+JP:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06030d;
+  --bg-deep:#0c0618;
+  --panel:#100a1f;
+  --violet:#7c3aed;
+  --neon:#b657ff;
+  --magenta:#ff2bd6;
+  --cyan:#4fe3ff;
+  --ink:#e9e2ff;
+  --ink-dim:#9c8fc2;
+  --line: rgba(182,87,255,0.25);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  font-weight:300;
+  overflow-x:hidden;
+}
+::selection{background:var(--neon);color:#000;}
+
+/* scanline / grain atmosphere */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(124,58,237,0.18), transparent 60%),
+    radial-gradient(ellipse 50% 30% at 90% 100%, rgba(255,43,214,0.10), transparent 60%);
+  pointer-events:none;
+  z-index:1;
+}
+
+/* ---------- NAV ---------- */
+nav.side{
+  position:fixed;left:0;top:0;bottom:0;
+  width:230px;
+  background:linear-gradient(180deg,var(--panel),var(--bg-deep));
+  border-right:1px solid var(--line);
+  z-index:100;
+  padding:32px 0;
+  display:flex;flex-direction:column;
+  transition:transform .3s ease;
+}
+.nav-brand{
+  font-family:'Orbitron',sans-serif;
+  font-weight:700;
+  font-size:1.05rem;
+  letter-spacing:.12em;
+  color:var(--neon);
+  padding:0 28px 28px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:18px;
+}
+.nav-brand small{display:block;font-family:'Inter';font-weight:300;color:var(--ink-dim);font-size:.6rem;letter-spacing:.18em;margin-top:6px;}
+.nav-links{display:flex;flex-direction:column;gap:2px;}
+.nav-links a{
+  display:flex;align-items:center;gap:14px;
+  padding:13px 28px;
+  color:var(--ink-dim);
+  text-decoration:none;
+  font-size:.82rem;
+  letter-spacing:.06em;
+  border-left:2px solid transparent;
+  transition:all .25s ease;
+  position:relative;
+}
+.nav-links a svg{width:16px;height:16px;flex-shrink:0;opacity:.8;}
+.nav-links a:hover, .nav-links a.active{
+  color:var(--ink);
+  background:rgba(182,87,255,0.08);
+  border-left:2px solid var(--neon);
+  text-shadow:0 0 12px rgba(182,87,255,.6);
+}
+.nav-toggle{
+  display:none;position:fixed;top:18px;right:18px;z-index:200;
+  width:42px;height:42px;border-radius:8px;
+  background:var(--panel);border:1px solid var(--line);
+  color:var(--neon);font-size:1.2rem;
+  align-items:center;justify-content:center;cursor:pointer;
+}
+
+/* ---------- MAIN ---------- */
+main{margin-left:230px;position:relative;z-index:2;}
+
+section{
+  min-height:100vh;
+  padding:90px 6vw;
+  border-bottom:1px solid var(--line);
+  position:relative;
+  display:flex;flex-direction:column;
+  justify-content:center;
+}
+
+.eyebrow{
+  font-family:'Noto Sans JP',sans-serif;
+  color:var(--ink-dim);
+  font-size:.78rem;letter-spacing:.3em;
+  margin-bottom:14px;
+  text-transform:uppercase;
+}
+h2.title{
+  font-family:'Orbitron',sans-serif;
+  font-weight:900;
+  font-size:clamp(1.8rem,4vw,3rem);
+  letter-spacing:.05em;
+  color:var(--ink);
+  text-shadow:0 0 24px rgba(182,87,255,.35);
+  margin-bottom:6px;
+}
+.kanji{
+  font-family:'Noto Sans JP';
+  position:absolute;
+  font-size:7rem;
+  color:rgba(182,87,255,0.05);
+  font-weight:700;
+  pointer-events:none;
+  user-select:none;
+}
+
+/* ---------- HERO ---------- */
+.hero{
+  display:grid;grid-template-columns:1.1fr 1fr;
+  align-items:center;gap:40px;
+  padding-top:60px;
+}
+.hero-text{position:relative;z-index:3;}
+.hero-text .brand{
+  font-family:'Orbitron',sans-serif;font-weight:900;
+  font-size:clamp(2.4rem,5.5vw,4.6rem);
+  letter-spacing:.1em;
+  background:linear-gradient(90deg,#d9b8ff,var(--neon) 40%,var(--magenta) 80%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 30px rgba(182,87,255,.45));
+  line-height:1.05;
+}
+.hero-text .role{
+  margin-top:14px;
+  font-family:'Noto Sans JP';
+  letter-spacing:.4em;
+  color:var(--ink-dim);
+  font-size:.85rem;
+  text-transform:uppercase;
+}
+.hero-text .jp{
+  margin-top:10px;color:var(--cyan);opacity:.55;font-family:'Noto Sans JP';font-size:.95rem;letter-spacing:.1em;
+}
+.hero-text p.lede{
+  margin-top:28px;max-width:480px;color:var(--ink-dim);
+  font-size:1rem;line-height:1.75;font-weight:300;
+}
+.cta-row{margin-top:34px;display:flex;gap:16px;}
+.btn{
+  font-family:'Orbitron';font-size:.72rem;letter-spacing:.15em;
+  padding:14px 26px;border-radius:2px;cursor:pointer;text-decoration:none;
+  transition:all .25s ease;
+}
+.btn-primary{
+  background:linear-gradient(90deg,var(--violet),var(--magenta));
+  color:#fff;border:none;
+  box-shadow:0 0 22px rgba(182,87,255,.45);
+}
+.btn-primary:hover{box-shadow:0 0 36px rgba(255,43,214,.65);transform:translateY(-2px);}
+.btn-ghost{
+  border:1px solid var(--line);color:var(--ink-dim);background:transparent;
+}
+.btn-ghost:hover{color:var(--ink);border-color:var(--neon);}
+
+.canvas-wrap{
+  position:relative;height:560px;
+  display:flex;align-items:center;justify-content:center;
+}
+.canvas-wrap canvas{display:block;}
+.canvas-glow{
+  position:absolute;width:60%;height:60%;
+  background:radial-gradient(circle,rgba(182,87,255,.28),transparent 70%);
+  filter:blur(30px);z-index:0;
+}
+.canvas-label{
+  position:absolute;bottom:6px;left:50%;transform:translateX(-50%);
+  font-family:'Noto Sans JP';font-size:.65rem;letter-spacing:.25em;
+  color:var(--ink-dim);text-transform:uppercase;
+}
+
+/* ---------- ABOUT ---------- */
+.about-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:50px;align-items:center;}
+.about-grid .canvas-wrap{height:480px;}
+.about-text p{color:var(--ink-dim);line-height:1.85;font-size:1rem;margin-bottom:18px;max-width:520px;}
+.stat-row{display:flex;gap:36px;margin-top:30px;}
+.stat{}
+.stat .num{font-family:'Orbitron';font-weight:700;color:var(--neon);font-size:1.6rem;}
+.stat .lbl{font-size:.7rem;letter-spacing:.15em;color:var(--ink-dim);text-transform:uppercase;margin-top:4px;}
+
+/* ---------- SKILLS ---------- */
+.skills-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:50px;align-items:center;}
+.skill-list{display:flex;flex-direction:column;gap:22px;}
+.skill-item{}
+.skill-head{display:flex;justify-content:space-between;font-family:'Orbitron';font-size:.85rem;letter-spacing:.08em;margin-bottom:8px;}
+.skill-head span:last-child{color:var(--neon);}
+.bar{height:6px;background:rgba(182,87,255,.1);border-radius:3px;overflow:hidden;}
+.bar i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--violet),var(--cyan));box-shadow:0 0 10px rgba(182,87,255,.6);transform-origin:left;transform:scaleX(0);transition:transform 1.4s cubic-bezier(.2,.8,.2,1);}
+.skill-item.in-view .bar i{transform:scaleX(1);}
+
+/* ---------- PROJECTS ---------- */
+.projects-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:50px;align-items:center;}
+.proj-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.proj-card{
+  background:var(--panel);border:1px solid var(--line);border-radius:6px;
+  padding:20px;transition:all .3s ease;position:relative;overflow:hidden;
+}
+.proj-card:hover{border-color:var(--neon);transform:translateY(-4px);box-shadow:0 12px 30px rgba(182,87,255,.18);}
+.proj-card .tag{font-size:.62rem;letter-spacing:.15em;color:var(--cyan);text-transform:uppercase;}
+.proj-card h4{font-family:'Orbitron';margin-top:8px;font-size:.95rem;color:var(--ink);}
+.proj-card p{margin-top:8px;color:var(--ink-dim);font-size:.8rem;line-height:1.6;}
+
+/* ---------- EXPERIENCE ---------- */
+.exp-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:50px;align-items:center;}
+.timeline{border-left:1px solid var(--line);padding-left:30px;display:flex;flex-direction:column;gap:34px;}
+.tl-item{position:relative;}
+.tl-item::before{
+  content:'';position:absolute;left:-36px;top:4px;width:11px;height:11px;border-radius:50%;
+  background:var(--neon);box-shadow:0 0 12px var(--neon);
+}
+.tl-item .yr{font-family:'Orbitron';color:var(--neon);font-size:1rem;letter-spacing:.05em;}
+.tl-item .role{font-weight:500;color:var(--ink);margin-top:4px;}
+.tl-item .org{color:var(--ink-dim);font-size:.85rem;margin-top:2px;}
+
+/* ---------- CONTACT ---------- */
+.contact-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:50px;align-items:center;}
+.contact-list{display:flex;flex-direction:column;gap:18px;margin-top:26px;}
+.contact-list a, .contact-list div{
+  display:flex;align-items:center;gap:14px;color:var(--ink-dim);text-decoration:none;font-size:.9rem;
+}
+.contact-list svg{width:18px;height:18px;color:var(--neon);}
+.contact-list a:hover{color:var(--ink);}
+
+/* ---------- ACHIEVEMENTS ---------- */
+.ach-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:50px;align-items:center;}
+.badge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.badge{
+  background:var(--panel);border:1px solid var(--line);border-radius:8px;
+  padding:22px 10px;text-align:center;transition:all .3s ease;
+}
+.badge:hover{border-color:var(--magenta);box-shadow:0 0 22px rgba(255,43,214,.25);transform:translateY(-3px);}
+.badge .ic{font-size:1.6rem;margin-bottom:10px;}
+.badge .nm{font-family:'Orbitron';font-size:.66rem;letter-spacing:.05em;color:var(--ink);}
+.badge .yr{font-size:.62rem;color:var(--ink-dim);margin-top:4px;}
+
+footer{
+  text-align:center;padding:26px;color:var(--ink-dim);font-size:.7rem;letter-spacing:.1em;
+  border-top:1px solid var(--line);
+}
+
+@media (max-width: 980px){
+  .hero, .about-grid, .skills-grid, .projects-grid, .exp-grid, .contact-grid, .ach-grid{
+    grid-template-columns:1fr !important;
+  }
+  .canvas-wrap{height:380px;order:-1;}
+}
+@media (max-width: 760px){
+  nav.side{transform:translateX(-100%);width:78vw;}
+  nav.side.open{transform:translateX(0);}
+  .nav-toggle{display:flex;}
+  main{margin-left:0;}
+  section{padding:80px 6vw;}
+  .proj-cards{grid-template-columns:1fr;}
+  .badge-grid{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+
+<div class="nav-toggle" id="navToggle">☰</div>
+<nav class="side" id="sideNav">
+  <div class="nav-brand">AVANIJAA<small>未来をコードする者</small></div>
+  <div class="nav-links">
+    <a href="#home" class="active">⌂ Home</a>
+    <a href="#about">◇ About</a>
+    <a href="#skills">⌬ Skills</a>
+    <a href="#projects">▣ Projects</a>
+    <a href="#experience">⤳ Experience</a>
+    <a href="#contact">✉ Contact</a>
+    <a href="#achievements">🏆 Achievements</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- HOME -->
+  <section id="home">
+    <div class="kanji" style="top:6%;right:4%;">侍</div>
+    <div class="hero">
+      <div class="hero-text">
+        <div class="brand">AVANIJAA</div>
+        <div class="role">Developer · Designer · Creator</div>
+        <div class="jp">未来をコードする者 — one who codes the future</div>
+        <p class="lede">A neon-forged digital samurai who blends discipline with creative engineering — building immersive interfaces, fluid motion, and futuristic experiences one line of code at a time.</p>
+        <div class="cta-row">
+          <a href="#projects" class="btn btn-primary">View Projects</a>
+          <a href="#contact" class="btn btn-ghost">Let's Connect</a>
+        </div>
+      </div>
+      <div class="canvas-wrap" id="wrap-home">
+        <div class="canvas-glow"></div>
+        <div class="canvas-label">меditation protocol — booting</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="kanji" style="bottom:4%;left:2%;">道</div>
+    <div class="eyebrow">001 / Profile</div>
+    <h2 class="title">About Me</h2>
+    <div class="about-grid" style="margin-top:30px;">
+      <div class="canvas-wrap" id="wrap-about">
+        <div class="canvas-glow"></div>
+        <div class="canvas-label">stance — vigilance</div>
+      </div>
+      <div class="about-text">
+        <p>I'm Avanijaa, a passionate developer and creative technologist who loves building immersive digital experiences. I blend code with creativity to craft futuristic, functional, and beautiful things.</p>
+        <p>Every project is approached like a blade is forged — patiently, precisely, and with intent. I care about the small details that make an interface feel alive.</p>
+        <div class="stat-row">
+          <div class="stat"><div class="num">15+</div><div class="lbl">Projects Shipped</div></div>
+          <div class="stat"><div class="num">5</div><div class="lbl">Years Crafting</div></div>
+          <div class="stat"><div class="num">5</div><div class="lbl">Core Languages</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="kanji" style="top:6%;right:3%;">技</div>
+    <div class="eyebrow">002 / Arsenal</div>
+    <h2 class="title">Skills</h2>
+    <div class="skills-grid" style="margin-top:30px;">
+      <div class="skill-list">
+        <div class="skill-item"><div class="skill-head"><span>HTML5</span><span>85%</span></div><div class="bar"><i style="width:85%"></i></div></div>
+        <div class="skill-item"><div class="skill-head"><span>CSS3</span><span>95%</span></div><div class="bar"><i style="width:95%"></i></div></div>
+        <div class="skill-item"><div class="skill-head"><span>JavaScript</span><span>90%</span></div><div class="bar"><i style="width:90%"></i></div></div>
+        <div class="skill-item"><div class="skill-head"><span>Python</span><span>85%</span></div><div class="bar"><i style="width:85%"></i></div></div>
+        <div class="skill-item"><div class="skill-head"><span>C++</span><span>80%</span></div><div class="bar"><i style="width:80%"></i></div></div>
+      </div>
+      <div class="canvas-wrap" id="wrap-skills">
+        <div class="canvas-glow"></div>
+        <div class="canvas-label">forging — hardlight terminal</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="kanji" style="bottom:4%;right:2%;">創</div>
+    <div class="eyebrow">003 / Build Log</div>
+    <h2 class="title">Projects</h2>
+    <div class="projects-grid" style="margin-top:30px;">
+      <div class="proj-cards">
+        <div class="proj-card"><div class="tag">Web Design</div><h4>Cyber Portfolio</h4><p>A glowing personal site shell built for showing off code, craft, and motion.</p></div>
+        <div class="proj-card"><div class="tag">UI/UX Design</div><h4>Neon Dashboard</h4><p>Data-dense admin panel rendered in low-light neon glass aesthetics.</p></div>
+        <div class="proj-card"><div class="tag">AI · Frontend</div><h4>AI Chat Interface</h4><p>A conversational UI tuned for clarity, speed, and a touch of atmosphere.</p></div>
+        <div class="proj-card"><div class="tag">Creative Code</div><h4>Holographic UI</h4><p>Experimental 3D interface elements rendered live in the browser.</p></div>
+      </div>
+      <div class="canvas-wrap" id="wrap-projects">
+        <div class="canvas-glow"></div>
+        <div class="canvas-label">dual blade stance — focus</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="kanji" style="top:6%;left:2%;">歴</div>
+    <div class="eyebrow">004 / Timeline</div>
+    <h2 class="title">Experience</h2>
+    <div class="exp-grid" style="margin-top:30px;">
+      <div class="timeline">
+        <div class="tl-item"><div class="yr">2024</div><div class="role">Frontend Developer</div><div class="org">CyberTech Solutions</div></div>
+        <div class="tl-item"><div class="yr">2023</div><div class="role">UI/UX Designer</div><div class="org">Neon Studios</div></div>
+        <div class="tl-item"><div class="yr">2022</div><div class="role">Web Developer</div><div class="org">Digital Samurai Labs</div></div>
+        <div class="tl-item"><div class="yr">2021</div><div class="role">Freelance Developer</div><div class="org">Independent</div></div>
+      </div>
+      <div class="canvas-wrap" id="wrap-experience">
+        <div class="canvas-glow"></div>
+        <div class="canvas-label">forward march — resolve</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="kanji" style="bottom:4%;right:3%;">縁</div>
+    <div class="eyebrow">005 / Signal</div>
+    <h2 class="title">Contact</h2>
+    <div class="contact-grid" style="margin-top:30px;">
+      <div>
+        <p style="color:var(--ink-dim);max-width:420px;line-height:1.7;">Let's build something amazing together. Reach out through any of the channels below.</p>
+        <div class="contact-list">
+          <a href="mailto:avanijaa.dev@gmail.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h16v16H4z"/><path d="M4 4l8 8 8-8"/></svg> avanijaa.dev@gmail.com</a>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 5c0 9 8 17 17 17l3-4-6-3-2 2c-3-1-6-4-7-7l2-2-3-6z"/></svg> +91 98765 43210</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="10" r="3"/><path d="M12 21s7-7.5 7-12a7 7 0 0 0-14 0c0 4.5 7 12 7 12z"/></svg> Cyber City, Japan</div>
+        </div>
+        <a href="mailto:avanijaa.dev@gmail.com" class="btn btn-primary" style="display:inline-block;margin-top:30px;">Let's Connect</a>
+      </div>
+      <div class="canvas-wrap" id="wrap-contact">
+        <div class="canvas-glow"></div>
+        <div class="canvas-label">opening transmission</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACHIEVEMENTS -->
+  <section id="achievements">
+    <div class="kanji" style="top:6%;right:2%;">誉</div>
+    <div class="eyebrow">006 / Honors</div>
+    <h2 class="title">Achievements</h2>
+    <div class="ach-grid" style="margin-top:30px;">
+      <div class="badge-grid">
+        <div class="badge"><div class="ic">🏆</div><div class="nm">Top Developer</div><div class="yr">2024</div></div>
+        <div class="badge"><div class="ic">🎖</div><div class="nm">Best UI Design</div><div class="yr">2023</div></div>
+        <div class="badge"><div class="ic">⚔</div><div class="nm">Code Warrior</div><div class="yr">2023</div></div>
+        <div class="badge"><div class="ic">✦</div><div class="nm">Innovation Award</div><div class="yr">2022</div></div>
+        <div class="badge"><div class="ic">⬡</div><div class="nm">Open Source Contributor</div><div class="yr">2022</div></div>
+        <div class="badge"><div class="ic">🌙</div><div class="nm">Night Shift Sensei</div><div class="yr">2021</div></div>
+      </div>
+      <div class="canvas-wrap" id="wrap-achievements">
+        <div class="canvas-glow"></div>
+        <div class="canvas-label">trophy presentation — honor</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>© 2026 Avanijaa. All rights reserved.</footer>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ---------------- NAV ---------------- */
+const navToggle=document.getElementById('navToggle');
+const sideNav=document.getElementById('sideNav');
+navToggle.addEventListener('click',()=>sideNav.classList.toggle('open'));
+document.querySelectorAll('.nav-links a').forEach(a=>{
+  a.addEventListener('click',()=>sideNav.classList.remove('open'));
+});
+const navAnchors=document.querySelectorAll('.nav-links a');
+const sections=document.querySelectorAll('main section');
+const navObserver=new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){
+      navAnchors.forEach(a=>a.classList.remove('active'));
+      const id=en.target.getAttribute('id');
+      const link=document.querySelector('.nav-links a[href="#'+id+'"]');
+      if(link) link.classList.add('active');
+    }
+  });
+},{threshold:0.4});
+sections.forEach(s=>navObserver.observe(s));
+
+/* skills bar reveal */
+const skillObserver=new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{ if(en.isIntersecting) en.target.classList.add('in-view'); });
+},{threshold:0.5});
+document.querySelectorAll('.skill-item').forEach(el=>skillObserver.observe(el));
+
+/* ---------------- THREE.JS PROCEDURAL NEON SAMURAI ---------------- */
+function buildSamurai(opts){
+  opts = opts || {};
+  const group = new THREE.Group();
+  const neon = opts.neon !== undefined ? opts.neon : 0xb657ff;
+  const armorColor = 0x0c0814;
+  const skinColor = 0x2a1f3d;
+
+  const armorMat = new THREE.MeshStandardMaterial({color:armorColor, roughness:0.35, metalness:0.7});
+  const glowMat = new THREE.MeshStandardMaterial({color:neon, emissive:neon, emissiveIntensity:2.2, roughness:0.2, metalness:0.3});
+  const skinMat = new THREE.MeshStandardMaterial({color:skinColor, roughness:0.6, metalness:0.1});
+
+  // torso
+  const torso = new THREE.Mesh(new THREE.CapsuleGeometry(0.55,1.1,6,12), armorMat);
+  torso.position.y = 1.7;
+  group.add(torso);
+
+  // chest glow line
+  const chestGlow = new THREE.Mesh(new THREE.TorusGeometry(0.42,0.025,8,24,Math.PI), glowMat);
+  chestGlow.position.set(0,1.85,0.5);
+  chestGlow.rotation.x = Math.PI/2;
+  group.add(chestGlow);
+
+  // back emblem disc
+  const emblem = new THREE.Mesh(new THREE.CircleGeometry(0.28,32), glowMat);
+  emblem.position.set(0,1.9,-0.56);
+  emblem.rotation.y = Math.PI;
+  group.add(emblem);
+  const emblemRing = new THREE.Mesh(new THREE.RingGeometry(0.3,0.34,32), glowMat);
+  emblemRing.position.set(0,1.9,-0.561);
+  emblemRing.rotation.y = Math.PI;
+  group.add(emblemRing);
+
+  // head
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.34,24,24), skinMat);
+  head.position.y = 2.62;
+  group.add(head);
+
+  // hair bun
+  const bun = new THREE.Mesh(new THREE.SphereGeometry(0.16,16,16), new THREE.MeshStandardMaterial({color:0x0a0510, roughness:0.5}));
+  bun.position.set(0,2.98,-0.05);
+  group.add(bun);
+  const hairBack = new THREE.Mesh(new THREE.ConeGeometry(0.32,0.7,16,1,true), new THREE.MeshStandardMaterial({color:0x0a0510, roughness:0.6, side:THREE.DoubleSide}));
+  hairBack.position.set(0,2.45,-0.12);
+  hairBack.rotation.x = Math.PI;
+  group.add(hairBack);
+
+  // eyes glow
+  const eyeGeo = new THREE.SphereGeometry(0.045,8,8);
+  const eyeL = new THREE.Mesh(eyeGeo, glowMat); eyeL.position.set(-0.12,2.64,0.29); group.add(eyeL);
+  const eyeR = new THREE.Mesh(eyeGeo, glowMat); eyeR.position.set(0.12,2.64,0.29); group.add(eyeR);
+
+  // shoulders
+  [-1,1].forEach(side=>{
+    const shoulder = new THREE.Mesh(new THREE.SphereGeometry(0.26,16,16), armorMat);
+    shoulder.position.set(side*0.68,2.18,0);
+    group.add(shoulder);
+    const shGlow = new THREE.Mesh(new THREE.TorusGeometry(0.27,0.02,8,20), glowMat);
+    shGlow.position.set(side*0.68,2.18,0);
+    shGlow.rotation.y = Math.PI/2;
+    group.add(shGlow);
+  });
+
+  // arms (upper+forearm) container, so we can pose them
+  function makeArm(side){
+    const armGroup = new THREE.Group();
+    armGroup.position.set(side*0.68,2.05,0);
+    const upper = new THREE.Mesh(new THREE.CapsuleGeometry(0.13,0.55,6,10), armorMat);
+    upper.position.y = -0.32;
+    armGroup.add(upper);
+    const elbowGlow = new THREE.Mesh(new THREE.TorusGeometry(0.13,0.018,8,16), glowMat);
+    elbowGlow.position.y = -0.6;
+    elbowGlow.rotation.x = Math.PI/2;
+    armGroup.add(elbowGlow);
+    const foreGroup = new THREE.Group();
+    foreGroup.position.y = -0.6;
+    const fore = new THREE.Mesh(new THREE.CapsuleGeometry(0.115,0.5,6,10), armorMat);
+    fore.position.y = -0.28;
+    foreGroup.add(fore);
+    const hand = new THREE.Mesh(new THREE.SphereGeometry(0.11,12,12), skinMat);
+    hand.position.y = -0.56;
+    foreGroup.add(hand);
+    armGroup.add(foreGroup);
+    armGroup.userData.foreGroup = foreGroup;
+    return armGroup;
+  }
+  const armL = makeArm(-1); group.add(armL);
+  const armR = makeArm(1); group.add(armR);
+
+  // hips / legs
+  const hips = new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.42,0.3,12), armorMat);
+  hips.position.y = 1.05;
+  group.add(hips);
+
+  function makeLeg(side){
+    const legGroup = new THREE.Group();
+    legGroup.position.set(side*0.24,0.92,0);
+    const thigh = new THREE.Mesh(new THREE.CapsuleGeometry(0.17,0.6,6,10), armorMat);
+    thigh.position.y = -0.34;
+    legGroup.add(thigh);
+    const kneeGlow = new THREE.Mesh(new THREE.TorusGeometry(0.16,0.018,8,16), glowMat);
+    kneeGlow.position.y = -0.66;
+    kneeGlow.rotation.x = Math.PI/2;
+    legGroup.add(kneeGlow);
+    const shinGroup = new THREE.Group();
+    shinGroup.position.y = -0.66;
+    const shin = new THREE.Mesh(new THREE.CapsuleGeometry(0.15,0.55,6,10), armorMat);
+    shin.position.y = -0.3;
+    shinGroup.add(shin);
+    legGroup.add(shinGroup);
+    legGroup.userData.shinGroup = shinGroup;
+    return legGroup;
+  }
+  const legL = makeLeg(-1); group.add(legL);
+  const legR = makeLeg(1); group.add(legR);
+
+  // katana
+  const katana = new THREE.Group();
+  const blade = new THREE.Mesh(new THREE.BoxGeometry(0.045,1.3,0.012), glowMat);
+  blade.position.y = 0.75;
+  katana.add(blade);
+  const guard = new THREE.Mesh(new THREE.TorusGeometry(0.09,0.018,8,16), armorMat);
+  guard.rotation.x = Math.PI/2;
+  katana.add(guard);
+  const hilt = new THREE.Mesh(new THREE.CylinderGeometry(0.035,0.035,0.32,10), new THREE.MeshStandardMaterial({color:0x1a0f28, roughness:0.5}));
+  hilt.position.y = -0.18;
+  katana.add(hilt);
+
+  group.add(katana);
+  group.userData = {armL, armR, legL, legR, katana, head, glowParts:[chestGlow, emblem, emblemRing, eyeL, eyeR, blade]};
+
+  // floor ring
+  const floorRing = new THREE.Mesh(new THREE.RingGeometry(0.9,0.95,48), glowMat);
+  floorRing.rotation.x = -Math.PI/2;
+  floorRing.position.y = 0.02;
+  floorRing.material = new THREE.MeshBasicMaterial({color:neon, transparent:true, opacity:0.35, side:THREE.DoubleSide});
+  group.add(floorRing);
+
+  // particles
+  const particleGeo = new THREE.BufferGeometry();
+  const pCount = 40;
+  const positions = new Float32Array(pCount*3);
+  for(let i=0;i<pCount;i++){
+    const a = Math.random()*Math.PI*2;
+    const r = 0.8 + Math.random()*1.2;
+    positions[i*3] = Math.cos(a)*r;
+    positions[i*3+1] = Math.random()*3.2;
+    positions[i*3+2] = Math.sin(a)*r;
+  }
+  particleGeo.setAttribute('position', new THREE.BufferAttribute(positions,3));
+  const particleMat = new THREE.PointsMaterial({color:neon, size:0.025, transparent:true, opacity:0.65});
+  const particles = new THREE.Points(particleGeo, particleMat);
+  group.add(particles);
+  group.userData.particles = particles;
+
+  return group;
+}
+
+function poseMeditation(s){
+  s.userData.armL.rotation.set(0.5,0,1.1);
+  s.userData.armR.rotation.set(0.5,0,-1.1);
+  s.userData.armL.userData.foreGroup.rotation.set(-1.6,0,0.3);
+  s.userData.armR.userData.foreGroup.rotation.set(-1.6,0,-0.3);
+  s.userData.legL.rotation.set(0,0,1.0);
+  s.userData.legR.rotation.set(0,0,-1.0);
+  s.userData.legL.userData.shinGroup.rotation.set(0,0,-1.3);
+  s.userData.legR.userData.shinGroup.rotation.set(0,0,1.3);
+  s.userData.katana.visible = false;
+  s.position.y = -0.5;
+}
+function poseStanding(s, swordBack){
+  s.userData.armL.rotation.set(0.1,0,0.18);
+  s.userData.armR.rotation.set(-0.1,0,-0.12);
+  if(swordBack){
+    s.userData.katana.position.set(-0.25,2.15,-0.25);
+    s.userData.katana.rotation.set(0,0,-0.95);
+    s.userData.katana.rotation.y = 0.5;
+  }
+}
+function poseSkillReach(s){
+  s.userData.armR.rotation.set(-1.0,0.2,-0.5);
+  s.userData.armR.userData.foreGroup.rotation.set(-0.6,0,0);
+  s.userData.armL.rotation.set(0.2,0,0.4);
+  s.userData.katana.visible = false;
+}
+function poseBlade(s){
+  s.userData.armR.rotation.set(-0.9,0,-0.3);
+  s.userData.katana.position.set(0.42,1.55,0.15);
+  s.userData.katana.rotation.set(-0.6,0,-1.6);
+  s.userData.armL.rotation.set(0.3,0,0.9);
+}
+function poseWalk(s){
+  s.userData.legL.rotation.set(0.5,0,0.05);
+  s.userData.legR.rotation.set(-0.5,0,-0.05);
+  s.userData.armL.rotation.set(-0.4,0,0.1);
+  s.userData.armR.rotation.set(0.4,0,-0.1);
+}
+function poseOffer(s){
+  s.userData.armL.rotation.set(-1.1,0,0.7);
+  s.userData.armR.rotation.set(-1.1,0,-0.7);
+  s.userData.armL.userData.foreGroup.rotation.set(-0.5,0,0);
+  s.userData.armR.userData.foreGroup.rotation.set(-0.5,0,0);
+  s.userData.katana.visible = false;
+}
+function poseTrophy(s){
+  s.userData.armR.rotation.set(-2.4,0,-0.2);
+  s.userData.armR.userData.foreGroup.rotation.set(0,0,0);
+  s.userData.armL.rotation.set(0.15,0,0.3);
+  s.userData.katana.visible = false;
+}
+
+const scenesConfig = [
+  {id:'wrap-home', neon:0xb657ff, pose:poseMeditation, rotSpeed:0.005, camZ:4.2},
+  {id:'wrap-about', neon:0xff2bd6, pose:(s)=>{poseStanding(s,true); s.rotation.y = Math.PI;}, rotSpeed:0.003, camZ:4.0},
+  {id:'wrap-skills', neon:0x4fe3ff, pose:poseSkillReach, rotSpeed:0.004, camZ:4.0},
+  {id:'wrap-projects', neon:0xb657ff, pose:poseBlade, rotSpeed:0.004, camZ:4.0},
+  {id:'wrap-experience', neon:0xff2bd6, pose:poseWalk, rotSpeed:0.004, camZ:4.0},
+  {id:'wrap-contact', neon:0x4fe3ff, pose:poseOffer, rotSpeed:0.004, camZ:4.0},
+  {id:'wrap-achievements', neon:0xb657ff, pose:poseTrophy, rotSpeed:0.004, camZ:4.0},
+];
+
+const activeScenes = [];
+
+scenesConfig.forEach(cfg=>{
+  const wrap = document.getElementById(cfg.id);
+  if(!wrap) return;
+  const w = wrap.clientWidth, h = wrap.clientHeight;
+  const renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setSize(w,h);
+  wrap.appendChild(renderer.domElement);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(35, w/h, 0.1, 100);
+  camera.position.set(0,1.9,cfg.camZ);
+  camera.lookAt(0,1.6,0);
+
+  const ambient = new THREE.AmbientLight(0x2a1444, 1.2);
+  scene.add(ambient);
+  const key = new THREE.PointLight(cfg.neon, 3.5, 10);
+  key.position.set(1.5,3,2);
+  scene.add(key);
+  const rim = new THREE.PointLight(0x4fe3ff, 1.5, 10);
+  rim.position.set(-2,1,-2);
+  scene.add(rim);
+
+  const samurai = buildSamurai({neon:cfg.neon});
+  cfg.pose(samurai);
+  scene.add(samurai);
+
+  activeScenes.push({renderer, scene, camera, samurai, wrap, rotSpeed:cfg.rotSpeed});
+});
+
+function onResize(){
+  activeScenes.forEach(o=>{
+    const w = o.wrap.clientWidth, h = o.wrap.clientHeight;
+    o.renderer.setSize(w,h);
+    o.camera.aspect = w/h;
+    o.camera.updateProjectionMatrix();
+  });
+}
+window.addEventListener('resize', onResize);
+
+let t = 0;
+function animate(){
+  requestAnimationFrame(animate);
+  t += 0.016;
+  activeScenes.forEach(o=>{
+    o.samurai.rotation.y += o.rotSpeed;
+    o.samurai.position.y = (o.samurai.position.y || 0);
+    const baseY = o.samurai.position.y;
+    o.samurai.children.forEach(()=>{});
+    o.samurai.position.y = Math.sin(t*0.8)*0.06 + (o.samurai.userData.baseY||0);
+    if(o.samurai.userData.particles){
+      o.samurai.userData.particles.rotation.y += 0.002;
+    }
+    o.renderer.render(o.scene,o.camera);
+  });
+}
+animate();
+
+// pause offscreen scenes for perf
+const perfObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{
+    const match = activeScenes.find(o=>o.wrap===en.target);
+    if(match) match.paused = !en.isIntersecting;
+  });
+},{threshold:0.05});
+activeScenes.forEach(o=>perfObserver.observe(o.wrap));
+</script>
+</body>
+</html>
